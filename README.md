@@ -1,24 +1,66 @@
 # CivicAI — AI-Powered Community Problem Intelligence
 
-CivicAI is a full-stack AI-powered civic technology platform designed to help communities report, understand, prioritize, and monitor local problems.
+CivicAI is a full-stack AI-powered civic technology platform designed to help communities report, understand, prioritize, map, and track local problems. It combines AI analysis, geolocation, duplicate detection, analytics, and role-based administration to turn individual reports into structured civic intelligence.
 
-The platform combines **Artificial Intelligence, geolocation, duplicate detection, analytics, and role-based administration** to turn individual community reports into structured civic intelligence.
+## 🌐 Live Project
 
-## 🌐 Project
-
+- **Live Demo:** https://civicai-empe.onrender.com/
 - **GitHub:** https://github.com/sakchamkumar/CivicAI
-- **Backend:** https://civicai-backend-qqpr.onrender.com
-- **Frontend:** Deployed on Render
+- **Backend API:** https://civicai-backend-qqpr.onrender.com/
+
+---
+
+## 📸 Product Screenshots
+
+### 1. Landing Page
+
+![CivicAI Landing Page](screenshots/01-CivicAI-Landing.png)
+
+### 2. Login
+
+![CivicAI Login](screenshots/02-CivicAI-Login.png)
+
+### 3. Signup
+
+![CivicAI Signup](screenshots/03-CivicAI-Signup.png)
+
+### 4. Report a Community Problem
+
+![Report Problem](screenshots/04-CivicAI-Report-Problem.png)
+
+### 5. AI Analysis and Priority Scoring
+
+![AI Analysis](screenshots/05-CivicAI-AI-Analysis.png)
+
+### 6. Community Map
+
+![Community Map](screenshots/06-CivicAI-Community-Map.png)
+
+### 7. Report Details and Status History
+
+![Report Details](screenshots/07-CivicAI-Report-Details.png)
+
+### 8. Admin Dashboard
+
+![Admin Dashboard](screenshots/08-CivicAI-Admin-Dashboard.png)
+
+### 9. Analytics Dashboard
+
+![Analytics Dashboard](screenshots/09-CivicAI-Analytics.png)
 
 ---
 
 ## 🎯 Problem Statement
 
-Community problems such as potholes, waste accumulation, water issues, traffic problems, and environmental concerns are often reported without enough structure or prioritization.
+Community problems such as potholes, waste accumulation, water issues, traffic problems, electricity issues, and public-safety concerns are often difficult to organize and prioritize. CivicAI provides a structured reporting workflow and transforms reports into data that can be analyzed, mapped, prioritized, reviewed, and tracked.
 
-CivicAI addresses this by allowing users to submit a problem and automatically analyzing it using AI.
+---
 
-Instead of storing only a text complaint, CivicAI creates structured information such as:
+## ✨ Core Features
+
+### 🤖 AI-Powered Problem Analysis
+
+When a report is submitted, CivicAI sends the relevant problem information to Gemini and generates structured analysis including:
 
 - Problem category
 - Subcategory
@@ -27,20 +69,8 @@ Instead of storing only a text complaint, CivicAI creates structured information
 - AI confidence
 - Reasoning
 - Priority score
-- Geographic coordinates
-- Current resolution status
 
-This makes community reports easier to analyze and manage.
-
----
-
-## ✨ Features
-
-### 🤖 AI-Powered Problem Analysis
-
-When a user submits a report, CivicAI sends the problem information to Gemini and generates structured analysis.
-
-Example:
+Example response:
 
 ```json
 {
@@ -54,38 +84,38 @@ Example:
 }
 ```
 
-The AI pipeline validates the returned structure before saving it.
+The backend validates the AI response before saving it.
 
 ### 🎯 Priority Scoring
 
-CivicAI converts severity and safety risk into a priority score from 0–100, allowing administrators to identify urgent reports quickly.
+Severity and safety risk are converted into a 0–100 priority score so administrators can identify urgent problems more quickly.
 
 ### 📍 Geolocation
 
-Users can provide a location manually or allow CivicAI to obtain their GPS coordinates.
-
-Reports can contain latitude, longitude, location accuracy, and location source.
+Users can enter a location manually or allow the browser to obtain GPS coordinates. Reports can store latitude, longitude, location accuracy, and location source.
 
 ### 🔎 Duplicate Detection
 
-Before submitting a report, CivicAI checks existing reports for potential duplicates using:
+Before submission, CivicAI checks existing reports for potential duplicates using:
 
 - Text similarity
 - Geographic distance
 - Geographic score
 - Combined duplicate score
 
+This helps reduce repeated reports for the same local issue.
+
 ### 🗺️ Community Map
 
-Reports containing coordinates can be visualized using React Leaflet and OpenStreetMap, providing a spatial view of community problems.
+Reports containing coordinates are visualized using **React Leaflet** and **OpenStreetMap**, providing a spatial view of reported community problems.
 
 ### 👥 My Reports
 
-Authenticated users can view their submitted reports and open individual report details.
+Authenticated users can view their submitted reports and open detailed report pages.
 
 ### 📄 Report Details
 
-Reports display their description, category, location, AI analysis, severity, safety risk, priority score, current status, and status history.
+Each report can display its description, category, location, AI analysis, severity, safety risk, priority score, current status, and status history.
 
 ### 🔄 Status Workflow
 
@@ -99,26 +129,25 @@ In Progress
 Resolved
 ```
 
-Every status change is recorded in a status history timeline.
+Status changes are recorded in a separate status-history timeline for transparency.
 
-### 🛡️ Admin Dashboard
+### 🛡️ Role-Based Admin Dashboard
 
-Administrators have access to:
+Administrators can manage reports using:
 
 - Report statistics
 - Search
-- Category filtering
-- Status filtering
-- Severity filtering
-- Report management
+- Category filters
+- Status filters
+- Severity filters
 - Status updates
-- Status history
+- Report management
 
-Normal users cannot access the admin dashboard.
+Normal users are protected from administrative routes through both frontend and backend authorization checks.
 
-### 📊 Analytics
+### 📊 Community Analytics
 
-CivicAI calculates analytics directly from real Firestore report data, including:
+The Analytics dashboard calculates information directly from real Firestore report data, including:
 
 - Total reports
 - High-priority reports
@@ -132,123 +161,67 @@ CivicAI calculates analytics directly from real Firestore report data, including
 - Highest-priority reports
 - Approximate geographic hotspots
 
-No fake analytics data is used.
-
----
-
-## 🏗️ System Architecture
-
-```text
-                    ┌─────────────────────┐
-                    │       User          │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   React Frontend    │
-                    │       + Vite        │
-                    └──────────┬──────────┘
-                               │
-                  ┌────────────┼────────────┐
-                  │            │            │
-                  ▼            ▼            ▼
-             Firebase      Express API   Leaflet/
-              Auth &        Backend       OpenStreetMap
-             Firestore
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │      Gemini AI      │
-                    │  Problem Analysis   │
-                    └─────────────────────┘
-```
+**No fabricated analytics data is used.**
 
 ---
 
 ## 🧠 AI Pipeline
 
 ```text
-User submits report
-        ↓
-Input validation
-        ↓
-Description + category + location
-        ↓
-Gemini AI analysis
-        ↓
-JSON response
-        ↓
-Schema/value validation
-        ↓
-Severity + safety risk
-        ↓
-Priority score calculation
-        ↓
-Structured report saved
-        ↓
-Dashboard / Map / Analytics / Admin
+User Report
+     ↓
+Text + Category + Location
+     ↓
+CivicAI Backend
+     ↓
+Gemini AI Analysis
+     ↓
+Structured Validation
+     ↓
+Category + Severity + Safety Risk
+     ↓
+Priority Score
+     ↓
+Firestore
+     ↓
+Dashboard / Map / Admin / Analytics
 ```
-
-The AI does not directly control trusted workflow state such as the administrator's resolution status.
 
 ---
 
-## 🔬 Duplicate Detection Pipeline
+## 🏗️ System Architecture
 
 ```text
-New report
-    ↓
-Existing reports retrieved
-    ↓
-Text tokenization
-    ↓
-Stop-word removal
-    ↓
-Text similarity calculation
-    ↓
-Geographic distance calculation
-    ↓
-Geo score
-    ↓
-Combined duplicate score
-    ↓
-Potential duplicate matches
-```
-
-The current implementation uses geographic distance and text similarity rather than claiming to use a trained machine-learning model.
-
----
-
-## 🔐 Security
-
-CivicAI includes:
-
-- Firebase Authentication
-- Firestore security rules
-- Role-based admin authorization
-- Firebase Admin token verification
-- Protected frontend routes
-- Admin-only backend operations
-- Environment variables for secrets
-- `.env` files excluded from Git
-- Firebase service-account credentials excluded from Git
-- CORS configuration
-- Request validation
-- AI API rate limiting
-
-### Role-based access
-
-```text
-Normal User
- ├── Dashboard
- ├── Report Problem
- ├── My Reports
- ├── Map
- └── Analytics
-
-Admin
- ├── Everything above
- └── Admin Dashboard
+                         ┌──────────────────────┐
+                         │       User           │
+                         │ Report / Track Issue │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │   React + Vite       │
+                         │      Frontend        │
+                         └──────────┬───────────┘
+                                    │ HTTP / REST
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Node + Express       │
+                         │      Backend         │
+                         └───────┬───────┬──────┘
+                                 │       │
+                    ┌────────────┘       └─────────────┐
+                    ▼                                  ▼
+          ┌──────────────────┐                ┌──────────────────┐
+          │    Gemini AI    │                │ Firebase Admin   │
+          │ Classification   │                │ Auth / Firestore │
+          │ Priority / Risk  │                │ Data / Roles     │
+          └──────────────────┘                └──────────────────┘
+                                 │
+                                 ▼
+                    ┌────────────────────────┐
+                    │ Map / Admin / Analytics│
+                    │ Reports / Status Flow  │
+                    └────────────────────────┘
 ```
 
 ---
@@ -256,33 +229,49 @@ Admin
 ## 🛠️ Technology Stack
 
 ### Frontend
-
 - React
 - Vite
 - React Router
 - Axios
-- Firebase Authentication
-- Firebase Firestore
+- Firebase Web SDK
 - React Leaflet
 - OpenStreetMap
 
 ### Backend
-
 - Node.js
 - Express
+- Firebase Admin SDK
+- Firestore
+- Gemini API via `@google/genai`
+- Express Rate Limit
 - CORS
 - dotenv
-- Firebase Admin SDK
-- Gemini API
-- express-rate-limit
-- Multer
 
-### Deployment
-
+### Deployment & Observability
 - GitHub
 - Render
-- Firebase
 - Google Analytics
+- Google Search Console
+
+> **Note:** CivicAI currently uses text + location for AI analysis. Photo upload and image-based AI analysis are not implemented in the current production version.
+
+---
+
+## 🔐 Security and Engineering
+
+CivicAI was built with production-oriented security practices including:
+
+- Firebase Authentication
+- Protected user routes
+- Role-based admin authorization
+- Backend Firebase ID-token verification
+- Firestore security rules
+- Environment-based secrets
+- API rate limiting
+- Input validation
+- CORS configuration
+- No API secrets in frontend source code
+- Separate AI-analysis and status-history access controls
 
 ---
 
@@ -290,82 +279,68 @@ Admin
 
 ```text
 CivicAI/
-│
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── services/
-│   │   ├── App.jsx
 │   │   ├── firebase.js
 │   │   ├── config.js
-│   │   └── index.css
-│   ├── public/
-│   ├── package.json
-│   └── .gitignore
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── ...
 │
-└── backend/
-    ├── routes/
-    │   ├── ai.js
-    │   ├── duplicates.js
-    │   └── admin.js
-    ├── utils/
-    │   ├── gemini.js
-    │   └── firebaseAdmin.js
-    ├── server.js
-    ├── package.json
-    └── .gitignore
+├── backend/
+│   ├── routes/
+│   │   ├── ai.js
+│   │   ├── duplicates.js
+│   │   └── admin.js
+│   ├── utils/
+│   │   ├── gemini.js
+│   │   └── firebaseAdmin.js
+│   ├── server.js
+│   ├── package.json
+│   └── ...
+│
+└── README.md
 ```
 
 ---
 
-## 🗄️ Data Model
+## 🗃️ Main Data Model
 
 ### Users
 
-```text
-users/{userId}
- ├── name
- ├── email
- ├── role
- └── createdAt
-```
+Stores user identity, profile information, role, and account metadata.
 
 ### Reports
 
-```text
-reports/{reportId}
- ├── userId
- ├── description
- ├── category
- ├── location
- ├── latitude
- ├── longitude
- ├── severity
- ├── safetyRisk
- ├── priorityScore
- ├── aiConfidence
- ├── aiReasoning
- ├── status
- ├── createdAt
- └── updatedAt
-```
+Stores:
+
+- User ID
+- Description
+- Category
+- Location
+- Latitude / longitude
+- Location accuracy/source
+- AI analysis status
+- AI classification
+- Severity
+- Safety risk
+- Priority score
+- Current status
+- Timestamps
+
+### AI Analysis
+
+Stores validated AI analysis information associated with reports.
 
 ### Status History
 
-```text
-statusHistory/{statusId}
- ├── reportId
- ├── userId
- ├── previousStatus
- ├── newStatus
- ├── changedBy
- └── timestamp
-```
+Stores previous status, new status, user/report association, administrator who made the change, and timestamp.
 
 ---
 
-## 🚀 Running Locally
+## 🚀 Local Development
 
 ### 1. Clone the repository
 
@@ -374,19 +349,7 @@ git clone https://github.com/sakchamkumar/CivicAI.git
 cd CivicAI
 ```
 
-### 2. Start the backend
-
-```bash
-cd backend
-npm install
-npm start
-```
-
-The backend runs on `http://localhost:5000`.
-
-### 3. Start the frontend
-
-Open another terminal:
+### 2. Frontend
 
 ```bash
 cd frontend
@@ -394,81 +357,73 @@ npm install
 npm run dev
 ```
 
-The frontend runs on the Vite development URL shown in the terminal.
+### 3. Backend
 
-### 4. Environment variables
+In another terminal:
 
-Frontend environment variables are stored locally in `.env.local`.
+```bash
+cd backend
+npm install
+npm start
+```
 
-Backend environment variables are stored locally in `.env`.
-
-Secrets are intentionally not included in this repository.
+Configure the required environment variables locally. Never commit `.env` files or Firebase service-account credentials.
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing and Verification
 
-Major application flows were tested, including:
+The following production workflows have been tested:
 
 - User signup and login
-- Firebase authentication
+- Protected routes
 - Report creation
-- GPS location
-- AI analysis
-- Priority scoring
+- Browser GPS location
+- Gemini AI analysis
+- Severity and priority scoring
 - Duplicate detection
+- Community map
 - My Reports
 - Report Details
-- Status history
-- Admin authentication
-- Admin status updates
-- Admin dashboard filtering
-- Analytics
-- Map navigation
-- Protected routes
-- Firestore security rules
-- Production deployment
+- Status-history timeline
+- Admin role protection
+- Admin status management
+- Admin search and filters
+- Analytics using real Firestore data
+- Production frontend/backend deployment
+- Google Analytics real-time tracking
+- Google Search Console indexing
 
 ---
 
-## 📈 Engineering Principles
+## 📈 Responsible Engineering
 
-### Real data over fake demonstrations
+CivicAI intentionally avoids presenting fabricated community statistics or pretending to have machine-learning predictions without sufficient historical data. Current analytics are calculated from real Firestore reports, while more advanced predictive modeling can be added only after enough reliable historical data is collected.
 
-Analytics are calculated from actual Firestore reports rather than hard-coded sample statistics.
-
-### Explainable AI output
-
-The AI returns reasoning alongside classification, severity, and confidence.
-
-### No fake machine learning
-
-Duplicate detection currently uses deterministic text and geographic similarity rather than pretending to be a trained ML model.
-
-### Separation of responsibilities
-
-Frontend authentication and user interaction are separated from backend AI processing and privileged administrative operations.
-
-### Security by design
-
-Secrets remain outside the source code, while Firebase rules and backend authorization protect sensitive operations.
+Similarly, AI-generated classifications are validated before being stored rather than being treated as unquestioned ground truth.
 
 ---
 
-## 🌍 Future Improvements
+## 🔮 Future Improvements
 
-Possible future development includes:
+Potential future work includes:
 
-- Optional image-based problem analysis
-- Advanced geospatial clustering
-- Historical trend forecasting
-- Real machine-learning models after sufficient historical data is collected
-- Public civic issue feeds
-- Municipality/organization integrations
+- Larger-scale deployment and community testing
+- More advanced geographic hotspot analysis
+- Historical trend modeling
+- Real predictive models once sufficient data exists
+- Improved duplicate detection
+- Additional administrative workflows
 - Notifications for report status changes
-- More advanced geographic visualization
+- Optional multimodal reporting if appropriate infrastructure becomes available
 
-These are intentionally treated as future work rather than claiming functionality that is not currently implemented.
+---
+
+## 🎓 Why I Built This
+
+CivicAI explores how AI can be applied beyond chatbots to a practical civic problem: turning unstructured community reports into information that can be prioritized, mapped, reviewed, and tracked.
+
+The project combines **AI, full-stack engineering, geospatial data, databases, authentication, security, analytics, and deployment** in one system.
 
 ---
 
@@ -476,16 +431,14 @@ These are intentionally treated as future work rather than claiming functionalit
 
 **Sakcham Kumar**
 
-CivicAI is part of a broader portfolio of software projects exploring how computer science and artificial intelligence can be applied to real-world problems.
+CivicAI is part of a broader set of projects exploring how computer science and AI can solve practical problems in education, research, and communities.
 
-### Related projects
-
-- **EduBridgeAI** — AI + Education + College Access
-- **ResearchLensAI** — AI + Research + Knowledge Discovery
-- **CivicAI** — AI + Geospatial Data + Community Intelligence
+Related project:
+- **EduBridgeAI** — AI-powered education and college-admissions platform
+- **ResearchLensAI** — AI-powered research-paper analysis and discovery platform
 
 ---
 
-## 📜 License
+## 📄 License
 
 This project is currently presented as a personal portfolio and educational software project.
