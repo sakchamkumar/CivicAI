@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
@@ -24,7 +25,7 @@ function App() {
 
         <Route
           path="/"
-          element={<Navigate to="/login" replace />}
+          element={<Landing />}
         />
 
         <Route
@@ -70,10 +71,6 @@ function App() {
             element={<CommunityMap />}
           />
 
-          {/* ========================================================
-              COMMUNITY ANALYTICS
-          ======================================================== */}
-
           <Route
             path="/analytics"
             element={<Analytics />}
@@ -104,7 +101,7 @@ function App() {
 
         <Route
           path="*"
-          element={<Navigate to="/login" replace />}
+          element={<Navigate to="/" replace />}
         />
 
       </Routes>
